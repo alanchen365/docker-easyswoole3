@@ -1,0 +1,11 @@
+FROM trimble365/quality_php_env:latest
+RUN mkdir -p /server/L
+RUN mkdir -p /server/Q
+
+# 启动SSH 
+RUN sed -i 's/UsePAM yes/UsePAM no/g' /etc/ssh/sshd_config
+
+#CMD ["/usr/sbin/sshd", "-D"]
+
+EXPOSE 20000 20001 20100 20101 20200 20201 20300 20301 20400 20401 20500 20501 22
+WORKDIR /server

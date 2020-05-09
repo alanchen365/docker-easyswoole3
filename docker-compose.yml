@@ -1,0 +1,110 @@
+version: '2'
+services:
+  mysql:
+    container_name: mysql-dev
+    privileged: true
+    image: 'mysql:5.6.38'
+    restart: unless-stopped
+    volumes:
+      - ~/develop/mysql/5.6.38/:/var/lib/mysql
+    ports:
+      - "3306:3306"
+    expose:
+      - "3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=asa
+    networks:
+      - backend
+
+  redis:
+    container_name: redis-dev
+    privileged: true
+    image: 'redis:latest'
+    restart: unless-stopped
+    expose:
+      - "6379"
+    ports:
+      - "6379:6379"
+    networks:
+      - backend
+
+  easyswoole2:
+    container_name: easyswoole2
+    build:
+      context: ""
+      dockerfile: easyswoole2
+    privileged: true
+    restart: unless-stopped
+    ports:
+      - "20000:20000"
+      - "20100:20100"
+      - "20200:20200"
+      - "20300:20300"
+      - "20400:20400"
+      - "20500:20500"
+      - "20101:20101"
+      - "20201:20201"
+      - "20301:20301"
+      - "20401:20401"
+      - "20501:20501"
+
+      - "2222:22"
+    networks:
+      - backend
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "1g"
+
+  easyswoole3:
+    container_name: easyswoole3
+    build:
+      context: ""
+      dockerfile: easyswoole3
+    privileged: true
+    image: 'alanchen365/easyswoole3:latest'
+    restart: unless-stopped
+    volumes:
+      - ~/develop/php:/develop/php
+    ports:
+      - "50010:50010"
+      - "50011:50011"
+      - "50012:50012"
+      - "50013:50013"
+      - "50014:50014"
+      - "50015:50015"
+      - "50016:50016"
+      - "50017:50017"
+      - "50018:50018"
+      - "50019:50019"
+      - "50020:50020"
+      - "50021:50021"
+      - "50022:50022"
+      - "50023:50023"
+      - "50024:50024"
+      - "50025:50025"
+      - "50026:50026"
+      - "50027:50027"
+      - "50028:50028"
+      - "50029:50029"
+      - "50030:50030"
+      - "50050:50050"
+      - "50051:50051"
+      - "50052:50052"
+      - "50053:50053"
+      - "50054:50054"
+      - "50055:50055"
+      - "50056:50056"
+      - "50057:50057"
+      - "50058:50058"
+      - "50059:50059"
+      - "50060:50060"
+    networks:
+      - backend
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "1g"
+
+networks:
+  backend:
