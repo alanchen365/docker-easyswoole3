@@ -45,6 +45,11 @@ services:
       - "20101:20101"
       - "20201:20201"
       - "20301:20301"
+      - "20302:20302"
+      - "20303:20303"
+      - "20304:20304"
+      - "20305:20305"
+      - "20306:20306"
       - "20401:20401"
       - "20501:20501"
 
@@ -65,7 +70,9 @@ services:
     image: 'alanchen365/easyswoole3:latest'
     restart: unless-stopped
     volumes:
-      - ~/develop/php:/develop/php
+      - ~/develop/php:/mnt/server/php # 项目目录
+      - ~/develop/logs/php:/mnt/logs/php # 日志目录
+      - ~/develop/temp/php:/mnt/temp/php # temp目录
     ports:
       - "50010:50010"
       - "50011:50011"
