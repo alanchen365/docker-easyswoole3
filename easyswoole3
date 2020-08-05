@@ -101,6 +101,6 @@ RUN wget https://github.com/emcrisostomo/fswatch/releases/download/1.11.0/fswatc
     && rm -r fswatch
 
 ## Dir
-WORKDIR /develop/php
+WORKDIR /mnt/server/php
 
 CMD ["tailf", "/dev/null"]
