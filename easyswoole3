@@ -1,31 +1,59 @@
-FROM centos:7
+FROM centos:8
 
 #version defined
-ENV SWOOLE_VERSION 4.4.12
-ENV PHP_VERSION php74
+ENV SWOOLE_VERSION 4.5.2
+ENV PHP_VERSION 7.3
 ENV EASYSWOOLE_VERSION 3.x-dev
 
-RUN rpm -ivh --force --nodeps http://dl.fedoraproject.org/pub/epel/7/x86_64/Packages/e/epel-release-7-12.noarch.rpm
-RUN rpm --import /etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-7
-
-RUN rpm -ivh --force --nodeps  http://rpms.famillecollet.com/enterprise/remi-release-7.rpm
-RUN rpm --import http://rpms.famillecollet.com/RPM-GPG-KEY-remi
-
-# wget
+# 设置镜像源
 RUN yum install -y wget
-# use aliyun centos
-RUN yum clean all
-RUN yum makecache
+RUN wget -O /etc/yum.repos.d/CentOS-Base.repo https://mirrors.aliyun.com/repo/Centos-8.repo
+RUN wget -O /etc/yum.repos.d/epel.repo https://mirrors.aliyun.com/repo/Centos-8.repo
 
-# install libs
-RUN yum install -y deltarpm curl zip unzip openssl-devel gcc-c++ make libtool autoconf automake git svn net-tools telnet-server redis telnet-server.x86_64 telnet.x86_64 xinetd.x86_64 pcre-devel pcre pcre-devel zlib zlib-devel psmisc ImageMagick-devel
+# 清理镜像
+RUN yum clean all
+RUN yum makecache  
+RUN yum -y update 
+
+# 时间校准工具
+RUN yum -y install epel-release
+
+## install libs
+RUN yum install -y curl zip unzip openssl-devel gcc-c++ make libtool autoconf automake git svn net-tools telnet-server redis telnet-server.x86_64 telnet.x86_64 xinetd.x86_64 pcre-devel pcre pcre-devel zlib zlib-devel psmisc 
 RUN yum install -y memcached libmemcached
+RUN yum install -y redis
 RUN mkdir -p /usr/lib/x86_64-linux-gnu/include/libmemcached \
 && ln -s /usr/include/libmemcached/memcached.h /usr/lib/x86_64-linux-gnu/include/libmemcached/memcached.h
 
 #install php
-RUN yum install --enablerepo=remi-${PHP_VERSION} -y php php-fpm php-gd php-mbstring php-mcrypt php-mysqlnd php-cli php-devel php-common composer
+RUN dnf install https://mirrors.aliyun.com/epel/epel-release-latest-8.noarch.rpm
+RUN dnf -y install dnf-utils
+RUN dnf module install -y php:7.3
+RUN dnf module enable php:7.3
+RUN dnf install -y php php-fpm php-gd php-mbstring php-json php-openssl  php-mysqlnd php-cli php-devel php-common
+
+#RUN yum --enablerepo=remi-${PHP_VERSION} install -y php php-fpm php-gd php-mbstring php-json php-openssl php-mcrypt php-mysqlnd php-cli php-devel php-common composer
+
+# composer
+RUN curl -sS https://getcomposer.org/installer | php \
+    && mv composer.phar /usr/bin/composer
+
+## use aliyun composer
 RUN composer config -g repo.packagist composer https://mirrors.aliyun.com/composer/
+
+# fswatch ext
+RUN wget https://github.com/emcrisostomo/fswatch/releases/download/1.15.0/fswatch-1.15.0.tar.gz -O fswatch.tar.gz \
+    && mkdir -p fswatch \
+    && tar zxvf fswatch.tar.gz -C fswatch --strip-components=1 \
+    && rm fswatch.tar.gz \
+    && ( \
+    cd fswatch \
+    && ./configure  \
+    && make \
+    && make install  \
+    ) \
+    && rm -r fswatch
+
 
 # swoole ext
 RUN wget https://github.com/swoole/swoole-src/archive/v${SWOOLE_VERSION}.tar.gz -O swoole.tar.gz \
@@ -43,7 +71,7 @@ RUN wget https://github.com/swoole/swoole-src/archive/v${SWOOLE_VERSION}.tar.gz 
     && rm -r swoole
 
 # redis ext
-RUN wget http://pecl.php.net/get/redis-5.2.2.tgz -O redis.tar.gz \
+RUN wget http://pecl.php.net/get/redis-5.1.1.tgz -O redis.tar.gz \
     && mkdir -p redis \
     && tar zxvf redis.tar.gz -C redis --strip-components=1 \
     && rm redis.tar.gz \
@@ -57,20 +85,34 @@ RUN wget http://pecl.php.net/get/redis-5.2.2.tgz -O redis.tar.gz \
     && echo 'extension=redis.so' > /etc/php.d/20-redis.ini \
     && rm -r redis
 
-# imagick ext
-RUN wget http://pecl.php.net/get/imagick-3.4.4.tgz -O imagick.tar.gz \
-    && mkdir -p imagick \
-    && tar zxvf imagick.tar.gz -C imagick --strip-components=1 \
-    && rm imagick.tar.gz \
-    && ( \
-    cd imagick \
-    && phpize \
-    && ./configure  \
-    && make \
-    && make install \
-    ) \
-    && echo 'extension=imagick.so' > /etc/php.d/20-imagick.ini \
-    && rm -r imagick
+## ImageMagick ext
+#RUN wget https://github.com/ImageMagick/ImageMagick/archive/7.0.10-27.tar.gz -O ImageMagick.tar.gz \
+#    && mkdir -p ImageMagick \
+#    && tar zxvf ImageMagick.tar.gz -C ImageMagick --strip-components=1 \
+#    && rm ImageMagick.tar.gz \
+#    && ( \
+#    cd ImageMagick \
+#    && phpize \
+#    && ./configure --enable-ImageMagick \
+#    && make \
+#    && make install \
+#    ) \
+#    && rm -r ImageMagick
+
+## imagick ext
+#RUN wget http://pecl.php.net/get/imagick-3.4.4.tgz -O imagick.tar.gz \
+#    && mkdir -p imagick \
+#    && tar zxvf imagick.tar.gz -C imagick --strip-components=1 \
+#    && rm imagick.tar.gz \
+#    && ( \
+#    cd imagick \
+#    && phpize \
+#    && ./configure  \
+#    && make \
+#    && make install \
+#    ) \
+#    && echo 'extension=imagick.so' > /etc/php.d/20-imagick.ini \
+#    && rm -r imagick
 
 # inotify
 RUN wget http://pecl.php.net/get/inotify-2.0.0.tgz -O inotify.tar.gz \
@@ -87,20 +129,32 @@ RUN wget http://pecl.php.net/get/inotify-2.0.0.tgz -O inotify.tar.gz \
     && echo 'extension=inotify.so' > /etc/php.d/20-inotify.ini \
     && rm -r inotify
 
-# fswatch ext
-RUN wget https://github.com/emcrisostomo/fswatch/releases/download/1.11.0/fswatch-1.11.0.tar.gz -O fswatch.tar.gz \
-    && mkdir -p fswatch \
-    && tar zxvf fswatch.tar.gz -C fswatch --strip-components=1 \
-    && rm fswatch.tar.gz \
+# xlswriter
+RUN wget http://pecl.php.net/get/xlswriter -O xlswriter.tar.gz \
+    && mkdir -p xlswriter \
+    && tar zxvf xlswriter.tar.gz -C xlswriter --strip-components=1 \
+    && rm xlswriter.tar.gz \
     && ( \
-    cd fswatch \
+    cd xlswriter \
+    && phpize \
     && ./configure  \
     && make \
-    && make install  \
+    && make install \
     ) \
-    && rm -r fswatch
+    && echo 'extension=xlswriter.so' > /etc/php.d/20-xlswriter.ini \
+    && rm -r xlswriter
 
-## Dir
+#RUN rm -rf /root/.oh-my-zsh/
+#RUN yum -y install zsh
+#RUN dnf install -y util-linux-user
+#RUN chsh -s /bin/zsh
+
+#RUN sh -c "$(curl -fsSL http://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)" 
+#RUN wget http://github.com/robbyrussell/oh-my-zsh/raw/master/tools/install.sh -O - | sh 
+#RUN zsh
+#RUN yum -y install which
+#RUN chsh -s $(which zsh)
+#RUN source ~/.zshrc 
+
 WORKDIR /mnt/server/php
-
-CMD ["tailf", "/dev/null"]
+CMD ["tail", "-f", "/dev/null"]
