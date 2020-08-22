@@ -156,5 +156,12 @@ RUN wget http://pecl.php.net/get/xlswriter -O xlswriter.tar.gz \
 #RUN chsh -s $(which zsh)
 #RUN source ~/.zshrc 
 
-WORKDIR /mnt/server/php
-CMD ["tail", "-f", "/dev/null"]
+WORKDIR /mnt/server/php/php-easyswoole3
+
+COPY ./composer.json .
+RUN  composer install && mv ./vendor ../
+
+COPY . .
+RUN mv ../vendor .
+
+CMD ["/usr/bin/php","easyswoole","start"]
