@@ -1,15 +1,15 @@
 version: '2'
 services:
   easyswoole3:
-    container_name: easyswoole3
+    container_name: easyswoole3test
     build:
       context: ""
       dockerfile: easyswoole3
     privileged: true
     image: 'alanchen365/easyswoole3:latest'
     restart: always
-    volumes:
-      - ~/develop/php/php-easyswoole3:/mnt/server/php/php-easyswoole3 # 项目目录
+    #volumes:
+      #- ~/develop/php/php-easyswoole3:/mnt/server/php/php-easyswoole3 # 项目目录
      # - ~/develop/logs/php:/mnt/logs/php # 日志目录 待定
      # - ~/develop/temp/php:/mnt/temp/php # temp目录 待定
     ports:

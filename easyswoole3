@@ -165,3 +165,4 @@ COPY . .
 RUN mv ../vendor .
 
 CMD ["/usr/bin/php","easyswoole","start"]
+#CMD ["tail", "-f", "/dev/null"]
