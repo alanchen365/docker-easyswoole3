@@ -144,18 +144,6 @@ RUN wget http://pecl.php.net/get/xlswriter -O xlswriter.tar.gz \
     && echo 'extension=xlswriter.so' > /etc/php.d/20-xlswriter.ini \
     && rm -r xlswriter
 
-#RUN rm -rf /root/.oh-my-zsh/
-#RUN yum -y install zsh
-#RUN dnf install -y util-linux-user
-#RUN chsh -s /bin/zsh
-
-#RUN sh -c "$(curl -fsSL http://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)" 
-#RUN wget http://github.com/robbyrussell/oh-my-zsh/raw/master/tools/install.sh -O - | sh 
-#RUN zsh
-#RUN yum -y install which
-#RUN chsh -s $(which zsh)
-#RUN source ~/.zshrc 
-
 WORKDIR /mnt/server/php/php-easyswoole3
 
 COPY ./composer.json .
