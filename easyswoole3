@@ -144,13 +144,17 @@ RUN wget http://pecl.php.net/get/xlswriter -O xlswriter.tar.gz \
     && echo 'extension=xlswriter.so' > /etc/php.d/20-xlswriter.ini \
     && rm -r xlswriter
 
+# 目录
 WORKDIR /mnt/server/php/php-easyswoole3
 
+# 动态自动安装依赖 有的时候部署失败后 需要手动调整composer.json 文件,增加一些空格字符（为了能让docker编译的时候在跑一次）
 COPY ./composer.json .
 RUN  composer install && mv ./vendor ../
 
 COPY . .
 RUN mv ../vendor .
 
+# 直接启动php easyswoole的服务
 CMD ["/usr/bin/php","easyswoole","start"]
+# 容器进不去的时候可以临时进去docker 手动调试
 #CMD ["tail", "-f", "/dev/null"]
