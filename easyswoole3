@@ -137,7 +137,7 @@ RUN wget http://pecl.php.net/get/xlswriter -O xlswriter.tar.gz \
     && ( \
     cd xlswriter \
     && phpize \
-    && ./configure  \
+    && ./configure --enable-reader \
     && make \
     && make install \
     ) \
