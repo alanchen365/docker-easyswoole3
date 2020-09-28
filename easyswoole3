@@ -12,8 +12,8 @@ RUN wget -O /etc/yum.repos.d/epel.repo https://mirrors.aliyun.com/repo/Centos-8.
 
 # 清理镜像
 RUN yum clean all
-RUN yum makecache  
-RUN yum -y update 
+RUN yum makecache
+RUN yum -y update
 
 # 时间校准工具
 RUN yum -y install epel-release
@@ -133,7 +133,7 @@ RUN wget http://pecl.php.net/get/inotify-2.0.0.tgz -O inotify.tar.gz \
 RUN wget http://pecl.php.net/get/xlswriter -O xlswriter.tar.gz \
     && mkdir -p xlswriter \
     && tar zxvf xlswriter.tar.gz -C xlswriter --strip-components=1 \
-    && rm xlswriter.tar.gz \
+    && rm -rf xlswriter.tar.gz \
     && ( \
     cd xlswriter \
     && phpize \
@@ -142,7 +142,7 @@ RUN wget http://pecl.php.net/get/xlswriter -O xlswriter.tar.gz \
     && make install \
     ) \
     && echo 'extension=xlswriter.so' > /etc/php.d/20-xlswriter.ini \
-    && rm -r xlswriter
+    && rm -rf xlswriter
 
 #RUN rm -rf /root/.oh-my-zsh/
 #RUN yum -y install zsh
