@@ -29,12 +29,16 @@ services:
       - backend
 
   easyswoole2:
-    container_name: easyswoole2
+    container_name: es2
     build:
       context: ""
       dockerfile: easyswoole2
     privileged: true
     restart: unless-stopped
+    volumes:
+      - ~/develop/php:/mnt/server/php # 项目目录
+      - ~/develop/logs/php:/mnt/logs/php # 日志目录
+      - ~/develop/temp/php:/mnt/temp/php # temp目录
     ports:
       - "20000:20000"
       - "20100:20100"
@@ -52,7 +56,6 @@ services:
       - "20306:20306"
       - "20401:20401"
       - "20501:20501"
-
       - "2222:22"
     networks:
       - backend
@@ -62,7 +65,7 @@ services:
         max-size: "1g"
 
   easyswoole3:
-    container_name: easyswoole3
+    container_name: es3
     build:
       context: ""
       dockerfile: easyswoole3

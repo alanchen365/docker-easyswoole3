@@ -52,7 +52,7 @@ RUN wget https://github.com/emcrisostomo/fswatch/releases/download/1.15.0/fswatc
     && make \
     && make install  \
     ) \
-    && rm -rf fswatch
+    && rm -rf fswatch;
 
 
 # swoole ext
