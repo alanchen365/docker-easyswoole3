@@ -142,7 +142,22 @@ RUN wget http://pecl.php.net/get/xlswriter -O xlswriter.tar.gz \
     && make install \
     ) \
     && echo 'extension=xlswriter.so' > /etc/php.d/20-xlswriter.ini \
-    && rm -rf xlswriter
+    && rm -rf xlswriter;
+
+
+# blake2
+RUN cd /tmp \
+    && rm -rf blake2 \
+    && git clone https://github.com/strawbrary/php-blake2 ./blake2 \
+    && ( \
+    cd blake2 \
+    && phpize \
+    && ./configure --enable-blake2 \
+    && make \
+    && make install \
+    ) \
+    && echo 'extension=blake2.so' > /etc/php.d/20-blake2.ini \
+    && rm -rf blake2;
 
 #RUN rm -rf /root/.oh-my-zsh/
 #RUN yum -y install zsh
