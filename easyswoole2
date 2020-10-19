@@ -7,5 +7,20 @@ RUN sed -i 's/UsePAM yes/UsePAM no/g' /etc/ssh/sshd_config
 
 #CMD ["/usr/sbin/sshd", "-D"]
 
+# xlswriter
+RUN wget http://pecl.php.net/get/xlswriter -O xlswriter.tar.gz \
+    && mkdir -p xlswriter \
+    && tar zxvf xlswriter.tar.gz -C xlswriter --strip-components=1 \
+    && rm -rf xlswriter.tar.gz \
+    && ( \
+    cd xlswriter \
+    && phpize \
+    && ./configure --enable-reader \
+    && make \
+    && make install \
+    ) \
+    && echo 'extension=xlswriter.so' > /etc/php.d/20-xlswriter.ini \
+    && rm -rf xlswriter;
+
 WORKDIR /mnt/server/php
 CMD ["tail", "-f", "/dev/null"]
