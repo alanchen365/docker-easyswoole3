@@ -26,7 +26,8 @@ RUN mkdir -p /usr/lib/x86_64-linux-gnu/include/libmemcached \
 && ln -s /usr/include/libmemcached/memcached.h /usr/lib/x86_64-linux-gnu/include/libmemcached/memcached.h
 
 #install php
-RUN dnf install https://mirrors.aliyun.com/epel/epel-release-latest-8.noarch.rpm
+#RUN dnf install https://mirrors.aliyun.com/epel/epel-release-latest-8.noarch.rpm
+RUN dnf -y install http://mirrors.tuna.tsinghua.edu.cn/epel/epel-release-latest-8.noarch.rpm
 RUN dnf -y install dnf-utils
 RUN dnf module install -y php:7.3
 RUN dnf module enable php:7.3
