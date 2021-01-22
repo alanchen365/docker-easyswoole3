@@ -1,0 +1,14 @@
+FROM pytorch/pytorch
+
+RUN mkdir ~/.pip;
+
+RUN cat > ~/.pip/pip.conf << EOF
+[global]
+trusted-host=mirrors.aliyun.com
+index-url=https://mirrors.aliyun.com/pypi/simple/
+EOF;
+
+RUN pip install scikit-image;
+
+WORKDIR /mnt/server/python;
+CMD ["tail", "-f", "/dev/null"];
