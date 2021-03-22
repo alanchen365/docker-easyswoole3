@@ -19,8 +19,8 @@ RUN yum -y update
 RUN yum -y install epel-release
 
 ## install libs
-RUN yum install -y curl zip unzip openssl-devel gcc-c++ make libtool autoconf automake git svn net-tools telnet-server redis telnet-server.x86_64 telnet.x86_64 xinetd.x86_64 pcre-devel pcre pcre-devel zlib zlib-devel psmisc 
-RUN yum install -y memcached libmemcached
+RUN yum install -y curl zip unzip openssl-devel gcc-c++ make libtool autoconf automake git svn net-tools telnet-server redis pcre-devel pcre pcre-devel zlib zlib-devel psmisc 
+#RUN yum install -y memcached libmemcached
 RUN yum install -y redis
 RUN mkdir -p /usr/lib/x86_64-linux-gnu/include/libmemcached \
 && ln -s /usr/include/libmemcached/memcached.h /usr/lib/x86_64-linux-gnu/include/libmemcached/memcached.h
@@ -36,7 +36,8 @@ RUN dnf install -y php php-fpm php-gd php-mbstring php-json php-openssl  php-mys
 #RUN yum --enablerepo=remi-${PHP_VERSION} install -y php php-fpm php-gd php-mbstring php-json php-openssl php-mcrypt php-mysqlnd php-cli php-devel php-common composer
 
 # composer
-RUN curl -sS https://getcomposer.org/installer | php \
+RUN wget -c https://mirrors.aliyun.com/composer/composer.phar \
+    && chmod 755 composer.phar \
     && mv composer.phar /usr/bin/composer
 
 ## use aliyun composer
@@ -161,18 +162,18 @@ RUN cd /tmp \
     && rm -rf blake2;
 
 # re2c
-RUN wget  https://github.com/skvadrik/re2c/releases/download/0.16/re2c-0.16.tar.gz -O re2c.tar.gz \
-    && mkdir -p re2c \
-    && tar zxvf re2c.tar.gz -C re2c --strip-components=1 \
-    && rm -rf re2c.tar.gz \
-    && ( \
-    cd re2c \
-    && ./configure  \
-    && make \
-    && make install \
-    ) \
-   # && echo 'extension=re2c.so' > /etc/php.d/20-re2c.ini \
-    && rm -rf re2c;
+#RUN wget https://github.com/skvadrik/re2c/archive/0.16.tar.gz -O re2c.tar.gz \
+#    && mkdir -p re2c \
+#    && tar zxvf re2c.tar.gz -C re2c --strip-components=1 \
+#    && rm -rf re2c.tar.gz \
+#    && ( \
+#    cd re2c \
+#    && ./configure  \
+#    && make \
+#    && make install \
+#    ) \
+#   # && echo 'extension=re2c.so' > /etc/php.d/20-re2c.ini \
+#    && rm -rf re2c;
 
 # libzip
 RUN wget https://nih.at/libzip/libzip-1.2.0.tar.gz -O libzip.tar.gz \
