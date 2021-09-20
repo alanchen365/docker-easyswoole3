@@ -28,41 +28,41 @@ services:
     networks:
       - backend
 
-  easyswoole2:
-    container_name: es2
-    build:
-      context: ""
-      dockerfile: easyswoole2
-    privileged: true
-    restart: unless-stopped
-    volumes:
-      - ~/develop/php:/mnt/server/php # 项目目录
-      - ~/develop/logs/php:/mnt/logs/php # 日志目录
-      - ~/develop/temp/php:/mnt/temp/php # temp目录
-    ports:
-      - "20000:20000"
-      - "20100:20100"
-      - "20200:20200"
-      - "20300:20300"
-      - "20400:20400"
-      - "20500:20500"
-      - "20101:20101"
-      - "20201:20201"
-      - "20301:20301"
-      - "20302:20302"
-      - "20303:20303"
-      - "20304:20304"
-      - "20305:20305"
-      - "20306:20306"
-      - "20401:20401"
-      - "20501:20501"
-      - "2222:22"
-    networks:
-      - backend
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "1g"
+  # easyswoole2:
+  #   container_name: es2
+  #   build:
+  #     context: ""
+  #     dockerfile: easyswoole2
+  #   privileged: true
+  #   restart: unless-stopped
+  #   volumes:
+  #     - ~/develop/php:/mnt/server/php # 项目目录
+  #     - ~/develop/logs/php:/mnt/logs/php # 日志目录
+  #     - ~/develop/temp/php:/mnt/temp/php # temp目录
+  #   ports:
+  #     - "20000:20000"
+  #     - "20100:20100"
+  #     - "20200:20200"
+  #     - "20300:20300"
+  #     - "20400:20400"
+  #     - "20500:20500"
+  #     - "20101:20101"
+  #     - "20201:20201"
+  #     - "20301:20301"
+  #     - "20302:20302"
+  #     - "20303:20303"
+  #     - "20304:20304"
+  #     - "20305:20305"
+  #     - "20306:20306"
+  #     - "20401:20401"
+  #     - "20501:20501"
+  #     - "2222:22"
+  #   networks:
+  #     - backend
+  #   logging:
+  #     driver: "json-file"
+  #     options:
+  #       max-size: "1g"
 
   easyswoole3:
     container_name: es3
@@ -128,6 +128,22 @@ services:
       - "5068:5068"
       - "5069:5069"
       - "5070:5070"
+      - "20000:20000"
+      - "20100:20100"
+      - "20200:20200"
+      - "20300:20300"
+      - "20400:20400"
+      - "20500:20500"
+      - "20101:20101"
+      - "20201:20201"
+      - "20301:20301"
+      - "20302:20302"
+      - "20303:20303"
+      - "20304:20304"
+      - "20305:20305"
+      - "20306:20306"
+      - "20401:20401"
+      - "20501:20501"
 
     networks:
       - backend
@@ -138,7 +154,7 @@ services:
       options:
         max-size: "1g"
     dns:
-      - 114.114.114.114
+      - 223.5.5.5
   
   # python3:
   #   container_name: py3
