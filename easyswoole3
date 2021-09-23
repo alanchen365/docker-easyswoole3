@@ -1,12 +1,12 @@
 FROM alanchen365/easyswoole3
 
 RUN yum install -y ghostscript
-RUN yum intall -y libtool-ltdl
-RUN yum intall -y libtool-ltdl-devel
-RUN yum intall -y libjpeg-devel
+RUN yum install -y libtool-ltdl
+RUN yum install -y libtool-ltdl-devel
+RUN yum install -y libjpeg-devel
 RUN yum install -y libpng-devel
 RUN yum install -y libtiff-devel
-RUN yum install -y libungif-devel
+#RUN yum install -y libungif-devel
 
 RUN wget http://www.imagemagick.org/download/ImageMagick.tar.gz  -O ImageMagick.tar.gz \
     && mkdir -p ImageMagick \
@@ -34,5 +34,5 @@ RUN wget http://pecl.php.net/get/imagick-3.4.4.tgz -O imagick.tar.gz \
     && echo 'extension=imagick.so' > /etc/php.d/20-imagick.ini \
     && rm -r imagick
 
-WORKDIR /mnt/server
+WORKDIR /mnt/server/php
 CMD ["tail", "-f", "/dev/null"]
