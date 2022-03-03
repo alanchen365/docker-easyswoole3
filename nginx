@@ -1,0 +1,12 @@
+FROM nginx
+
+# 复制html文件
+COPY conf.d/ /etc/nginx/conf.d
+
+EXPOSE 80
+WORKDIR /etc/nginx/conf.d
+
+#CMD ["/usr/sbin/init"]
+#CMD ["tailf", "/dev/null"]
+#CMD ["nginx", "-g", "daemon off;"]php-env
+#CMD ["/bin/bash", "/app/tbk-compile/docker/nginx1.12/daemon.sh"]
