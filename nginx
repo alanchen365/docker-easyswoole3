@@ -2,6 +2,7 @@ FROM nginx
 
 # 复制html文件
 COPY conf.d/ /etc/nginx/conf.d
+COPY ./nginx.conf /etc/nginx
 
 EXPOSE 80
 WORKDIR /etc/nginx/conf.d
