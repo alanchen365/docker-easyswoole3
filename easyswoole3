@@ -1,24 +1,5 @@
 FROM alanchen365/easyswoole3
 
-#RUN yum install -y ghostscript
-#RUN yum install -y libtool-ltdl
-#RUN yum install -y libtool-ltdl-devel
-#RUN yum install -y libjpeg-devel
-#RUN yum install -y libpng-devel
-#RUN yum install -y libtiff-devel
-##RUN yum install -y libungif-devel
-#
-#RUN wget http://www.imagemagick.org/download/ImageMagick.tar.gz  -O ImageMagick.tar.gz \
-#    && mkdir -p ImageMagick \
-#    && tar zxvf ImageMagick.tar.gz -C ImageMagick --strip-components=1 \
-#    && rm ImageMagick.tar.gz \
-#    && ( \
-#    cd ImageMagick \
-#    && ./configure --enable-shared --without-perl \
-#    && make \
-#    && make install \
-#    ) \
-#    && rm -r ImageMagick
 #
 #RUN wget http://pecl.php.net/get/imagick-3.4.4.tgz -O imagick.tar.gz \
 #    && mkdir -p imagick \
@@ -33,6 +14,37 @@ FROM alanchen365/easyswoole3
 #    ) \
 #    && echo 'extension=imagick.so' > /etc/php.d/20-imagick.ini \
 #    && rm -r imagick
+
+# 安装PDO扩展
+RUN yum install libsqlite3-dev;
+RUN wget http://pecl.php.net/get/pdo_sqlsrv-5.10.0.tgz -O sqlsrv.tar.gz \
+    && mkdir -p sqlsrv \
+    && tar zxvf sqlsrv.tar.gz -C sqlsrv --strip-components=1 \
+    && rm -rf sqlsrv.tar.gz \
+    && ( \
+    cd sqlsrv \
+    && phpize \
+    && ./configure  \
+    && make \
+    && make install \
+    ) \
+    && echo 'extension=pdo_sqlsrv.so' > /etc/php.d/20-sqlsrv.ini \
+    && rm -rf sqlsrv;
+
+RUN wget https://pecl.php.net/get/mongodb-1.13.0.tgz -O mongodb.tar.gz \
+    && mkdir -p mongodb \
+    && tar zxvf mongodb.tar.gz -C mongodb --strip-components=1 \
+    && rm -rf mongodb.tar.gz \
+    && ( \
+    cd mongodb \
+    && phpize \
+    && ./configure  \
+    && make \
+    && make install \
+    ) \
+    && echo 'extension=mongodb.so' > /etc/php.d/20-mongodb.ini \
+    && rm -rf mongodb;
+
 
 WORKDIR /mnt/server/php
 CMD ["tail", "-f", "/dev/null"]
