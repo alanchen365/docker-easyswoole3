@@ -182,7 +182,7 @@ services:
       - backend
 
   mongo:
-    container_name: mongodb-dev
+    container_name: mongo-dev
     privileged: true
     image: 'mongo:4.4.6'
     restart: unless-stopped
