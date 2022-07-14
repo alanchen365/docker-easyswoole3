@@ -181,6 +181,18 @@ services:
     networks:
       - backend
 
+  mongo:
+    container_name: mongodb-dev
+    privileged: true
+    image: 'mongo:4.4.6'
+    restart: unless-stopped
+    expose:
+      - "27017"
+    ports:
+      - "27017:27017"
+    networks:
+      - backend
+
   # python3:
   #   container_name: py3
   #   build:

@@ -1,6 +1,5 @@
 FROM alanchen365/easyswoole3
 
-#
 #RUN wget http://pecl.php.net/get/imagick-3.4.4.tgz -O imagick.tar.gz \
 #    && mkdir -p imagick \
 #    && tar zxvf imagick.tar.gz -C imagick --strip-components=1 \
@@ -16,20 +15,20 @@ FROM alanchen365/easyswoole3
 #    && rm -r imagick
 
 # 安装PDO扩展
-RUN yum install libsqlite3-dev;
-RUN wget http://pecl.php.net/get/pdo_sqlsrv-5.10.0.tgz -O sqlsrv.tar.gz \
-    && mkdir -p sqlsrv \
-    && tar zxvf sqlsrv.tar.gz -C sqlsrv --strip-components=1 \
-    && rm -rf sqlsrv.tar.gz \
-    && ( \
-    cd sqlsrv \
-    && phpize \
-    && ./configure  \
-    && make \
-    && make install \
-    ) \
-    && echo 'extension=pdo_sqlsrv.so' > /etc/php.d/20-sqlsrv.ini \
-    && rm -rf sqlsrv;
+# RUN yum install libsqlite3-dev;
+# RUN wget http://pecl.php.net/get/pdo_sqlsrv-5.10.0.tgz -O sqlsrv.tar.gz \
+#     && mkdir -p sqlsrv \
+#     && tar zxvf sqlsrv.tar.gz -C sqlsrv --strip-components=1 \
+#     && rm -rf sqlsrv.tar.gz \
+#     && ( \
+#     cd sqlsrv \
+#     && phpize \
+#     && ./configure  \
+#     && make \
+#     && make install \
+#     ) \
+#     && echo 'extension=pdo_sqlsrv.so' > /etc/php.d/20-sqlsrv.ini \
+#     && rm -rf sqlsrv;
 
 RUN wget https://pecl.php.net/get/mongodb-1.13.0.tgz -O mongodb.tar.gz \
     && mkdir -p mongodb \
